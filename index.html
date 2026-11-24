@@ -428,6 +428,19 @@ details summary:hover{color:var(--teal)}
 @media (prefers-reduced-motion:no-preference){.wamodal:not([hidden]) .wabox{animation:waIn .22s var(--ease-enter) both}@keyframes waIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}}
 @media (max-width:640px){.wamodal{padding:0;align-items:flex-end}.wabox{width:100%;border-radius:16px 16px 0 0;max-height:92vh;padding:20px 18px calc(20px + env(safe-area-inset-bottom))}}
 
+/* gated sections */
+.gate{position:relative}
+.gate.locked>.gated{filter:blur(7px) saturate(.7);opacity:.55;pointer-events:none;user-select:none}
+.gate:not(.locked)>.gcard{display:none}
+.gcard{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;padding:48px 16px;z-index:5}
+.gform{width:min(460px,100%);background:var(--sheet);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 24px 60px rgba(8,30,33,.22);position:sticky;top:96px}
+.gform h3{font-size:1.2rem;margin-top:8px}
+.glock{display:inline-flex;width:40px;height:40px;border-radius:50%;background:rgba(13,92,99,.1);color:var(--teal);align-items:center;justify-content:center}
+.glock svg{width:20px;height:20px}
+.gform .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.gform .two{grid-template-columns:1fr}.gcard{padding:24px 0}}
+.stlock{font:inherit;font-size:1rem;font-weight:700;color:var(--brass);background:none;border:0;border-bottom:1px dashed currentColor;padding:0;cursor:pointer}
+
 /* lead capture */
 .consent{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:.82rem;color:var(--muted);line-height:1.45;cursor:pointer}
 .consent input{width:18px;height:18px;min-height:0;margin-top:1px;accent-color:var(--teal);flex:none}
@@ -512,8 +525,8 @@ details summary:hover{color:var(--teal)}
   <div class="wrap statwrap">
     <div class="stats">
       <div><b class="num">226</b><span>plots in the approved layout</span></div>
-      <div><b class="num" id="stAvail"></b><span>available as on <span class="asofd"></span></span></div>
-      <div><b class="num">₹4,500</b><span>per sq ft, plus clubhouse charge</span></div>
+      <div><b class="num" id="stAvail" data-lock="avail"></b><span>available as on <span class="asofd"></span></span></div>
+      <div><b class="num" id="stRate" data-lock="cost">₹4,500</b><span>per sq ft, plus clubhouse charge</span></div>
       <div><b class="num" id="stRange"></b><span>sq ft, range of available plots</span></div>
     </div>
   </div>
@@ -528,7 +541,7 @@ details summary:hover{color:var(--teal)}
 <div class="wcard"><span class="wnum num">01</span><h3>Sale deeds are being registered now</h3><p>The layout plan was sanctioned in May 2025 and the project is RERA registered. Sale deeds are already being registered for booked plots.</p></div>
 <div class="wcard"><span class="wnum num">02</span><h3>Infrastructure is on the ground</h3><p>The 9 m (30 ft) internal roads, drains, electricity and water are complete. You are buying a plot you can walk on, not a drawing.</p></div>
 <div class="wcard"><span class="wnum num">03</span><h3>More open space than most layouts</h3><p>Less than 52% of the land is sold as plots. The rest is roads, 13 parks covering 6,052 sq m, and civic amenity sites.</p></div>
-<div class="wcard"><span class="wnum num">04</span><h3>One clear price</h3><p>₹4,500 per sq ft across the layout, plus a ₹1.5 lakh clubhouse charge per plot. Pick your exact plot on the master plan and see its value before you call.</p></div>
+<div class="wcard"><span class="wnum num">04</span><h3>One clear price</h3><p>One per sq ft rate across the layout, plus a ₹1.5 lakh clubhouse charge per plot. Pick your exact plot on the master plan and see its value before you call.</p></div>
 <div class="wcard"><span class="wnum num">05</span><h3>Metro within reach today</h3><p>The Yellow Line to Bommasandra is running, with the station 15 to 20 minutes away. An extension towards Attibele is being planned, and the state has said it will consider a link towards Jigani.</p></div>
 <div class="wcard"><span class="wnum num">06</span><h3>Built-in rental demand</h3><p>Homes here have a ready tenant base: the pharma and technology employers on the Jigani and Bommasandra link road, and the students, faculty and staff of IIM Bangalore's new Jigani campus. One property portal puts the rental yield in Jigani at 4.49%. <a href="https://www.squareyards.com/property-rates/jigani-bangalore" target="_blank" rel="noopener">Source</a></p></div>
 <div class="wcard wide"><span class="wnum num">07</span><h3>The biggest price triggers are still ahead</h3>
@@ -586,8 +599,9 @@ details summary:hover{color:var(--teal)}
   <div class="wrap" style="max-width:1340px">
     <div class="eyebrow">Master plan</div>
     <h2>Pick your plot from the approved plan.</h2>
-    <p class="lede">Every plot from the approved layout. Coloured plots are available, flagged plots are booked. Tap a plot for its size, facing, area and indicative value.</p>
+    <p class="lede">Every plot from the approved layout, with live availability. Tap a plot for its size, facing, area and indicative value.</p>
 
+    <div class="gate locked" id="gMap"><div class="gated">
     <div class="filters" id="filters">
       <div class="fgroup" data-g="size"><span>Size</span>
         <button class="chip" data-v="all" aria-pressed="true">All</button>
@@ -637,6 +651,19 @@ details summary:hover{color:var(--teal)}
 
       <aside class="panel" id="panel" aria-live="polite"></aside>
     </div>
+    </div>
+      <div class="gcard" role="region" aria-labelledby="gmT"><form class="gform" id="gmForm" novalidate>
+        <span class="glock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3h1.5A1.5 1.5 0 0 1 20 11.5v8A1.5 1.5 0 0 1 18.5 21h-13A1.5 1.5 0 0 1 4 19.5v-8A1.5 1.5 0 0 1 5.5 10H7Zm2 0h6V7a3 3 0 0 0-6 0v3Z" fill="currentColor"/></svg></span>
+        <h3 id="gmT">See live plot availability</h3><p class="fine">Enter your name and number to see which plots are open today, their sizes, facing and indicative value.</p>
+        <div class="two"><div class="field"><label for="gmName">Your name</label><input type="text" id="gmName" autocomplete="name"></div>
+        <div class="field"><label for="gmPhone">Mobile number</label><input type="tel" id="gmPhone" autocomplete="tel" inputmode="tel" placeholder="10-digit mobile"></div></div>
+        <div class="hp" aria-hidden="true"><input type="text" id="gmWeb" tabindex="-1" autocomplete="off"></div>
+        <label class="consent"><input type="checkbox" id="gmOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email.</label>
+        <p class="lerr" id="gmErr" role="alert"></p>
+        <button class="btn" type="submit" style="width:100%;margin-top:14px">Show available plots</button>
+        <p class="fine" style="margin-top:10px">One step unlocks plot availability, prices and the EMI calculator.</p>
+      </form></div>
+    </div>
 
     <p class="asof">Availability as on <span class="asofd"></span>, from the sales inventory register. Status can change the same day, so confirm with the sales team before you decide. Plot numbers and boundaries follow the approved layout plan. Plan is indicative and not to be scaled for construction.</p>
   </div>
@@ -646,7 +673,8 @@ details summary:hover{color:var(--teal)}
   <div class="wrap">
     <div class="eyebrow">Pricing and EMI</div>
     <h2>Work out the cost before you call.</h2>
-    <p class="lede">One rate across the layout: ₹4,500 per sq ft, plus a clubhouse charge of ₹1.5 lakh per plot.</p>
+    <p class="lede">One clear rate across the layout, plus a fixed clubhouse charge.</p>
+    <div class="gate locked" id="gCost"><div class="gated">
     <div class="calc">
       <div class="card">
         <h3>Cost estimator</h3>
@@ -675,6 +703,20 @@ details summary:hover{color:var(--teal)}
         </div>
         <p class="fine">Based on the indicative total from the estimator. The project is approved by all major banks. Loan terms depend on your lender and eligibility.</p>
       </div>
+    </div>
+    </div>
+      <div class="gcard" role="region" aria-labelledby="gcT"><form class="gform" id="gcForm" novalidate>
+        <span class="glock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3h1.5A1.5 1.5 0 0 1 20 11.5v8A1.5 1.5 0 0 1 18.5 21h-13A1.5 1.5 0 0 1 4 19.5v-8A1.5 1.5 0 0 1 5.5 10H7Zm2 0h6V7a3 3 0 0 0-6 0v3Z" fill="currentColor"/></svg></span>
+        <h3 id="gcT">See prices and EMI</h3><p class="fine">Enter your name and number to see the rate, work out the total for any plot and plan your EMI.</p>
+        <div class="two"><div class="field"><label for="gcName">Your name</label><input type="text" id="gcName" autocomplete="name"></div>
+        <div class="field"><label for="gcPhone">Mobile number</label><input type="tel" id="gcPhone" autocomplete="tel" inputmode="tel" placeholder="10-digit mobile"></div></div>
+        <div class="hp" aria-hidden="true"><input type="text" id="gcWeb" tabindex="-1" autocomplete="off"></div>
+        <label class="consent"><input type="checkbox" id="gcOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email.</label>
+        <p class="lerr" id="gcErr" role="alert"></p>
+        <button class="btn" type="submit" style="width:100%;margin-top:14px">Show prices</button>
+        <p class="fine" style="margin-top:10px">One step unlocks plot availability, prices and the EMI calculator.</p>
+      </form></div>
+    </div>
     </div>
   </div>
 </section>
@@ -846,7 +888,7 @@ details summary:hover{color:var(--teal)}
       <details><summary>What do the statuses mean?</summary><p>Available plots can be booked now. Flagged plots are booked or already registered. On hold plots are not released for sale yet.</p></details>
       <details><summary>Is the project approved for bank loans?</summary><p>Yes. The project is approved by all major banks for plot loans.</p></details>
        <details><summary>What kind of khata do the plots have?</summary><p>Each plot comes with an electronic A khata (e-khata).</p></details>
-       <details><summary>What is included in the price?</summary><p>The rate of ₹4,500 per sq ft covers the plot. A clubhouse charge of ₹1.5 lakh applies per plot. Stamp duty, registration and other statutory charges are paid separately at registration.</p></details>
+       <details><summary>What is included in the price?</summary><p>The per sq ft rate covers the plot. A clubhouse charge of ₹1.5 lakh applies per plot. Stamp duty, registration and other statutory charges are paid separately at registration.</p></details>
       <details><summary>Are the amenities ready?</summary><p>Roads, drains, electricity and water are complete. The clubhouse, swimming pool, pickleball courts, Miyawaki forest and tropical themed parks are being built.</p></details>
       <details><summary>Can I build right away?</summary><p>Once your sale deed is registered you can apply for building plan approval for your plot. The sales team can walk you through the process during your site visit.</p></details>
     </div>
@@ -1282,8 +1324,22 @@ applyFilters();renderPanel();calc();enquiry();
  document.addEventListener("keydown",function(e){if(!m.hidden&&e.key==="Escape")close()});
  $("brForm").addEventListener("submit",function(e){e.preventDefault();var n=$("bName").value,p=$("bPhone").value;
   if(!check(n,p,$("bOk").checked,"bErr"))return;var b=$("brSend");b.disabled=true;b.textContent="Preparing your download…";
-  var done=false;function go(){if(done)return;done=true;ls(KEY,"1");download();b.disabled=false;b.textContent="Download brochure";b.hidden=true;$("bDone").hidden=false}
+  var done=false;function go(){if(done)return;done=true;ls(KEY,"1");unlock();download();b.disabled=false;b.textContent="Download brochure";b.hidden=true;$("bDone").hidden=false}
   send({form:"brochure",name:n,phone:p,website:$("bWeb").value}).then(go);setTimeout(go,4000)});
+ /* gated availability and prices: one form unlocks both */
+ var G=[$("gMap"),$("gCost")],locks=document.querySelectorAll("[data-lock]"),keep={};
+ Array.prototype.forEach.call(locks,function(el){keep[el.id]=el.textContent});
+ function lockUI(){Array.prototype.forEach.call(locks,function(el){var c=el.getAttribute("data-lock")==="avail";
+   el.innerHTML="<button type='button' class='stlock' data-go2='"+(c?"masterplan":"pricing")+"'>"+(c?"See count":"See price")+"</button>"})}
+ function unlock(){G.forEach(function(g){g.classList.remove("locked")});
+   Array.prototype.forEach.call(locks,function(el){el.textContent=keep[el.id]||el.textContent})}
+ document.addEventListener("click",function(e){var b=e.target.closest("[data-go2]");if(!b)return;var t=$(b.getAttribute("data-go2"));if(t)t.scrollIntoView({behavior:"smooth"})});
+ if(ls(KEY))unlock();else{setTimeout(function(){Array.prototype.forEach.call(locks,function(el){keep[el.id]=el.textContent});lockUI()},0)}
+ function gate(k,form){$(k+"Form").addEventListener("submit",function(e){e.preventDefault();var n=$(k+"Name").value,p=$(k+"Phone").value;
+  if(!check(n,p,$(k+"Ok").checked,k+"Err"))return;ls(KEY,"1");send({form:form,name:n,phone:p,website:$(k+"Web").value},true);unlock();
+  var t=$(form==="availability"?"masterplan":"pricing");if(t)t.scrollIntoView({behavior:"smooth"})});
+  ["Name","Phone","Ok"].forEach(function(f){$(k+f).addEventListener("input",function(){$(k+"Err").textContent=""})})}
+ gate("gm","availability");gate("gc","cost");
  /* enquiry and WhatsApp forms: save the lead, then let WhatsApp open */
  function hook(btn,pre,form){$(btn).addEventListener("click",function(e){var n=$(pre+"Name").value,p=$(pre+"Phone").value;
   if(!check(n,p,$(pre+"Ok").checked,pre+"Err")){e.preventDefault();e.stopImmediatePropagation();return}
