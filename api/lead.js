@@ -6,7 +6,7 @@
 const BASE = (process.env.TELECRM_BASE_URL || 'https://next.telecrm.in/autoupdate/v2').replace(/\/$/, '');
 const ENT = process.env.TELECRM_ENTERPRISE_ID || '68cd52806250edb0e55d94b1';
 const TOKEN = process.env.TELECRM_SYNC_TOKEN;
-const ACTION = String(process.env.TELECRM_WEB_ACTION || '').replace(/^ACTION_/, '');
+const ACTION = String(process.env.TELECRM_WEB_ACTION || '1001').replace(/^ACTION_/, '');
 const FORMS = { brochure: 'Brochure download', enquiry: 'Enquiry form', whatsapp: 'WhatsApp form' };
 const ALLOWED = /^https:\/\/((new|www)\.)?thedistrictbynavilu\.com$|^https:\/\/the-district-site[a-z0-9-]*\.vercel\.app$/;
 
@@ -65,7 +65,7 @@ module.exports = async (req, res) => {
   const noteParts = [`${FORMS[form]} on the website.`];
   if (msg) noteParts.push(`Message: ${msg}`);
   if (b.page) noteParts.push(`Page: ${clip(b.page, 200)}`);
-  const af = { note: noteParts.join(' ') };
+  const af = { notes: noteParts.join(' ') };
   af['form'] = FORMS[form];
   if (need) af['interested_in'] = need;
   if (plot) af['plot_of_interest'] = plot;
