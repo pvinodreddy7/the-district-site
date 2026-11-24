@@ -8,6 +8,8 @@ const ENT = process.env.TELECRM_ENTERPRISE_ID || '68cd52806250edb0e55d94b1';
 const TOKEN = process.env.TELECRM_SYNC_TOKEN;
 const ACTION = String(process.env.TELECRM_WEB_ACTION || '1001').replace(/^ACTION_/, '');
 const FORMS = { brochure: 'Brochure download', enquiry: 'Enquiry form', whatsapp: 'WhatsApp form', availability: 'Plot availability', cost: 'Prices and EMI' };
+const crypto = require('crypto');
+const OTP_SECRET = process.env.OTP_SECRET;
 const ALLOWED = /^https:\/\/((new|www)\.)?thedistrictbynavilu\.com$|^https:\/\/the-district-site[a-z0-9-]*\.vercel\.app$/;
 
 function normalisePhone(input) {
@@ -56,13 +58,24 @@ module.exports = async (req, res) => {
   if (!name || name.length < 2) return res.status(400).json({ ok: false, error: 'Please enter your name.' });
   if (!phone) return res.status(400).json({ ok: false, error: 'Please enter a valid mobile number.' });
   if (!b.consent) return res.status(400).json({ ok: false, error: 'Please tick the consent box.' });
+  // WhatsApp OTP check (only when the form sent a code)
+  let verified = false;
+  if (b.token || b.otp) {
+    const parts = String(b.token || '').split('.'), exp = +parts[0], sig = parts[1] || '';
+    const code = String(b.otp || '').replace(/\D/g, '');
+    if (!OTP_SECRET || !exp || exp < Date.now()) return res.status(400).json({ ok: false, error: 'otp', message: 'That code has expired. Tap "Resend code".' });
+    const want = crypto.createHmac('sha256', OTP_SECRET).update(`${phone}|${code}|${exp}`).digest('hex');
+    if (sig.length !== want.length || !crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(want)))
+      return res.status(400).json({ ok: false, error: 'otp', message: 'That code does not match. Check WhatsApp and try again.' });
+    verified = true;
+  }
   if (!TOKEN) { console.error('TELECRM_SYNC_TOKEN not set'); return res.status(503).json({ ok: false, error: 'not configured' }); }
 
   const need = clip(b.need, 120) || ((form === 'availability' || form === 'cost') ? 'to see ' + FORMS[form].toLowerCase() : ''), plot = clip(b.plot, 40), msg = clip(b.msg, 1000), camp = clip(b.campaign, 300);
   let date = '';
   if (/^\d{4}-\d{2}-\d{2}$/.test(b.date || '')) date = b.date.split('-').reverse().join('/') + ' 10:00:00';
 
-  const noteParts = [`${FORMS[form]} on the website.`];
+  const noteParts = [`${FORMS[form]} on the website.`, verified ? 'Phone verified by WhatsApp OTP.' : 'Phone not OTP verified.'];
   if (msg) noteParts.push(`Message: ${msg}`);
   if (b.page) noteParts.push(`Page: ${clip(b.page, 200)}`);
   const af = { notes: noteParts.join(' ') };
@@ -81,7 +94,7 @@ module.exports = async (req, res) => {
     let id = s.json && s.json.data && s.json.data[0] && s.json.data[0].id;
     if (!id) {
       const r = await tc('/lead', { fields: { name, phone, lead_source_1: 'Website' }, actions });
-      if (r.status === 201 || r.status === 200) return res.status(200).json({ ok: true, created: true });
+      if (r.status === 201 || r.status === 200) return res.status(200).json({ ok: true, created: true, verified });
       if (r.status !== 409) { console.error('telecrm create', r.status, JSON.stringify(r.json)); return res.status(502).json({ ok: false, error: 'crm' }); }
       const s2 = await tc('/lead/search?limit=1', { fields: { phone } });
       id = s2.json && s2.json.data && s2.json.data[0] && s2.json.data[0].id;
@@ -90,7 +103,7 @@ module.exports = async (req, res) => {
       const a = await tc(`/lead/${id}/action`, { actions });
       if (a.status >= 300) console.error('telecrm action', a.status, JSON.stringify(a.json));
     }
-    return res.status(200).json({ ok: true, created: false });
+    return res.status(200).json({ ok: true, created: false, verified });
   } catch (e) {
     console.error('telecrm error', e && e.message);
     return res.status(502).json({ ok: false, error: 'crm' });
