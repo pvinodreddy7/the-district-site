@@ -4,8 +4,9 @@
 
 const crypto = require('crypto');
 const KEY = process.env.AISENSY_API_KEY;
-const CAMPAIGN = process.env.AISENSY_OTP_CAMPAIGN;
-const SECRET = process.env.OTP_SECRET;
+const CAMPAIGN = process.env.AISENSY_OTP_CAMPAIGN || 'website_otp';
+// Signing key: OTP_SECRET if set, otherwise derived from the TeleCRM token so no extra secret is needed.
+const SECRET = process.env.OTP_SECRET || (process.env.TELECRM_SYNC_TOKEN && require('crypto').createHash('sha256').update('the-district-otp|' + process.env.TELECRM_SYNC_TOKEN).digest('hex'));
 const ALLOWED = /^https:\/\/((new|www)\.)?thedistrictbynavilu\.com$|^https:\/\/the-district-site[a-z0-9-]*\.vercel\.app$/;
 const TTL_MS = 10 * 60 * 1000;
 

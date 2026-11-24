@@ -9,7 +9,7 @@ const TOKEN = process.env.TELECRM_SYNC_TOKEN;
 const ACTION = String(process.env.TELECRM_WEB_ACTION || '1001').replace(/^ACTION_/, '');
 const FORMS = { brochure: 'Brochure download', enquiry: 'Enquiry form', whatsapp: 'WhatsApp form', availability: 'Plot availability', cost: 'Prices and EMI' };
 const crypto = require('crypto');
-const OTP_SECRET = process.env.OTP_SECRET;
+const OTP_SECRET = process.env.OTP_SECRET || (process.env.TELECRM_SYNC_TOKEN && crypto.createHash('sha256').update('the-district-otp|' + process.env.TELECRM_SYNC_TOKEN).digest('hex'));
 const ALLOWED = /^https:\/\/((new|www)\.)?thedistrictbynavilu\.com$|^https:\/\/the-district-site[a-z0-9-]*\.vercel\.app$/;
 
 function normalisePhone(input) {
