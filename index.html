@@ -443,6 +443,11 @@ details summary:hover{color:var(--teal)}
 .nav{position:sticky}
 .mnav a.on{border-color:var(--teal);color:var(--teal);background:#e8f1ef}
 @media (prefers-reduced-motion:reduce){.navind{transition:none}}
+.otpbox{margin-top:6px}
+.otpbox input{letter-spacing:.4em;font-size:1.15rem;font-weight:700;text-align:center}
+.otplinks{font-size:.82rem;color:var(--muted);margin:8px 0 0}
+.linkbtn{background:none;border:0;padding:0;font:inherit;color:var(--teal);font-weight:650;text-decoration:underline;cursor:pointer}
+.linkbtn:disabled{color:var(--muted);text-decoration:none;cursor:default}
 /* gated sections */
 .gate{position:relative}
 .gate.locked>.gated{filter:blur(7px) saturate(.7);opacity:.55;pointer-events:none;user-select:none}
@@ -804,8 +809,9 @@ details summary:hover{color:var(--teal)}
         <div class="field"><label for="gmPhone">Mobile number</label><input type="tel" id="gmPhone" autocomplete="tel" inputmode="tel" placeholder="10-digit mobile"></div></div>
         <div class="hp" aria-hidden="true"><input type="text" id="gmWeb" tabindex="-1" autocomplete="off"></div>
         <label class="consent"><input type="checkbox" id="gmOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email.</label>
+        <div class="otpbox" id="gmOtpBox" hidden><div class="field"><label for="gmOtp">Enter the 6-digit code we sent to your WhatsApp</label><input type="text" id="gmOtp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••"></div><p class="otplinks"><button type="button" class="linkbtn" id="gmResend">Resend code</button><span id="gmWait"></span> · <button type="button" class="linkbtn" id="gmChange">Change number</button></p></div>
         <p class="lerr" id="gmErr" role="alert"></p>
-        <button class="btn" type="submit" style="width:100%;margin-top:14px">Show available plots</button>
+        <button class="btn" id="gmSend" type="submit" style="width:100%;margin-top:14px">Show available plots</button>
         <p class="fine" style="margin-top:10px">One step unlocks plot availability, prices and the EMI calculator.</p>
       </form></div>
     </div>
@@ -857,8 +863,9 @@ details summary:hover{color:var(--teal)}
         <div class="field"><label for="gcPhone">Mobile number</label><input type="tel" id="gcPhone" autocomplete="tel" inputmode="tel" placeholder="10-digit mobile"></div></div>
         <div class="hp" aria-hidden="true"><input type="text" id="gcWeb" tabindex="-1" autocomplete="off"></div>
         <label class="consent"><input type="checkbox" id="gcOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email.</label>
+        <div class="otpbox" id="gcOtpBox" hidden><div class="field"><label for="gcOtp">Enter the 6-digit code we sent to your WhatsApp</label><input type="text" id="gcOtp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••"></div><p class="otplinks"><button type="button" class="linkbtn" id="gcResend">Resend code</button><span id="gcWait"></span> · <button type="button" class="linkbtn" id="gcChange">Change number</button></p></div>
         <p class="lerr" id="gcErr" role="alert"></p>
-        <button class="btn" type="submit" style="width:100%;margin-top:14px">Show prices</button>
+        <button class="btn" id="gcSend" type="submit" style="width:100%;margin-top:14px">Show prices</button>
         <p class="fine" style="margin-top:10px">One step unlocks plot availability, prices and the EMI calculator.</p>
       </form></div>
     </div>
@@ -1238,7 +1245,8 @@ applyFilters();renderPanel();calc();enquiry();
     <div class="field"><label for="bPhone">Your mobile number</label><input type="tel" id="bPhone" autocomplete="tel" inputmode="tel" placeholder="10-digit mobile"></div>
     <div class="hp" aria-hidden="true"><label for="bWeb">Website</label><input type="text" id="bWeb" tabindex="-1" autocomplete="off"></div>
     <label class="consent"><input type="checkbox" id="bOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email.</label>
-    <p class="lerr" id="bErr" role="alert"></p>
+    <div class="otpbox" id="bOtpBox" hidden><div class="field"><label for="bOtp">Enter the 6-digit code we sent to your WhatsApp</label><input type="text" id="bOtp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••"></div><p class="otplinks"><button type="button" class="linkbtn" id="bResend">Resend code</button><span id="bWait"></span> · <button type="button" class="linkbtn" id="bChange">Change number</button></p></div>
+        <p class="lerr" id="bErr" role="alert"></p>
     <button class="btn" id="brSend" type="submit">Download brochure</button>
     <div id="bDone" hidden class="lok">Thank you. Your download has started. If it did not, <a id="bLink" href="the-district-brochure.pdf" download="The-District-by-Navilu-Brochure.pdf">tap here</a>.</div>
   </form>
@@ -1330,6 +1338,28 @@ applyFilters();renderPanel();calc();enquiry();
  function check(n,p,ok,err){var m="";if(n.trim().length<2)m="Please enter your name.";else if(!phoneOk(p))m="Please enter a valid mobile number.";else if(!ok)m="Please tick the box so we can contact you.";$(err).textContent=m;return !m}
  function send(data,keep){data.campaign=ss("tdCamp")||"";data.page=location.pathname+location.hash;data.consent=true;
   try{return fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data),keepalive:!!keep}).then(function(r){if(r.ok)ls(KEY,"1");return r.ok}).catch(function(){return false})}catch(e){return Promise.resolve(false)}}
+ var OTP_API=API.replace(/lead$/,"otp");
+ function post(url,data){return fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)}).then(function(r){return r.json().catch(function(){return {}}).then(function(j){j._s=r.status;return j})}).catch(function(){return {_s:0}})}
+ /* name + number + WhatsApp OTP, then onOk(). Falls back to no OTP if OTP is not set up or WhatsApp sending fails. */
+ function otpFlow(k,form,label,onOk){var st={token:null,busy:false,timer:null},btn=$(k==="b"?"brSend":k+"Send"),f=$(k==="b"?"brForm":k+"Form");
+  function busy(on,txt){st.busy=on;btn.disabled=on;if(txt)btn.textContent=txt}
+  function cool(){var n=30,rb=$(k+"Resend"),w=$(k+"Wait");rb.disabled=true;clearInterval(st.timer);
+   st.timer=setInterval(function(){n--;w.textContent=n>0?" in "+n+"s":"";if(n<=0){clearInterval(st.timer);rb.disabled=false}},1000);w.textContent=" in 30s"}
+  function finish(extra){var d={form:form,name:$(k+"Name").value,phone:$(k+"Phone").value,website:($(k+"Web")||{}).value||""};for(var x in extra)d[x]=extra[x];
+   d.campaign=ss("tdCamp")||"";d.page=location.pathname+location.hash;d.consent=true;return post(API,d)}
+  function ok(){ls(KEY,"1");busy(false,label);onOk()}
+  function sendCode(){busy(true,"Sending code to WhatsApp…");
+   post(OTP_API,{phone:$(k+"Phone").value,name:$(k+"Name").value,website:($(k+"Web")||{}).value||""}).then(function(j){
+    if(j._s===200&&j.token){st.token=j.token;$(k+"OtpBox").hidden=false;$(k+"Name").readOnly=true;$(k+"Phone").readOnly=true;busy(false,"Verify and continue");cool();setTimeout(function(){$(k+"Otp").focus()},30);return}
+    if(j._s===400){busy(false,label);$(k+"Err").textContent=j.error||"Please check your number.";return}
+    finish({}).then(ok)})}
+  f.addEventListener("submit",function(e){e.preventDefault();if(st.busy)return;
+   if(!st.token){if(!check($(k+"Name").value,$(k+"Phone").value,$(k+"Ok").checked,k+"Err"))return;sendCode();return}
+   var c=$(k+"Otp").value.replace(/\D/g,"");if(c.length!==6){$(k+"Err").textContent="Enter the 6-digit code from WhatsApp.";return}
+   busy(true,"Checking…");finish({otp:c,token:st.token}).then(function(j){if(j._s===400&&j.error==="otp"){busy(false,"Verify and continue");$(k+"Err").textContent=j.message||"That code does not match.";return}ok()})});
+  $(k+"Resend").addEventListener("click",function(){$(k+"Err").textContent="";sendCode()});
+  $(k+"Change").addEventListener("click",function(){st.token=null;clearInterval(st.timer);$(k+"OtpBox").hidden=true;$(k+"Otp").value="";$(k+"Name").readOnly=false;$(k+"Phone").readOnly=false;busy(false,label);$(k+"Phone").focus()});
+  $(k+"Otp").addEventListener("input",function(){$(k+"Err").textContent=""})}
  function download(){var a=document.createElement("a");a.href=BR;a.download="The-District-by-Navilu-Brochure.pdf";document.body.appendChild(a);a.click();a.remove()}
  /* brochure gate */
  var m=$("brModal"),last=null;
@@ -1338,10 +1368,7 @@ applyFilters();renderPanel();calc();enquiry();
  document.addEventListener("click",function(e){var l=e.target.closest("[data-broch]");if(!l)return;if(ls(KEY))return;e.preventDefault();open()});
  $("brClose").addEventListener("click",close);m.addEventListener("click",function(e){if(e.target===m)close()});
  document.addEventListener("keydown",function(e){if(!m.hidden&&e.key==="Escape")close()});
- $("brForm").addEventListener("submit",function(e){e.preventDefault();var n=$("bName").value,p=$("bPhone").value;
-  if(!check(n,p,$("bOk").checked,"bErr"))return;var b=$("brSend");b.disabled=true;b.textContent="Preparing your download…";
-  var done=false;function go(){if(done)return;done=true;ls(KEY,"1");unlock();download();b.disabled=false;b.textContent="Download brochure";b.hidden=true;$("bDone").hidden=false}
-  send({form:"brochure",name:n,phone:p,website:$("bWeb").value}).then(go);setTimeout(go,4000)});
+ otpFlow("b","brochure","Download brochure",function(){unlock();download();$("brSend").hidden=true;$("bDone").hidden=false});
  /* gated availability and prices: one form unlocks both */
  var G=[$("gMap"),$("gCost")],locks=document.querySelectorAll("[data-lock]"),keep={};
  Array.prototype.forEach.call(locks,function(el){keep[el.id]=el.textContent});
@@ -1351,11 +1378,9 @@ applyFilters();renderPanel();calc();enquiry();
    Array.prototype.forEach.call(locks,function(el){el.textContent=keep[el.id]||el.textContent})}
  document.addEventListener("click",function(e){var b=e.target.closest("[data-go2]");if(!b)return;var t=$(b.getAttribute("data-go2"));if(t)t.scrollIntoView({behavior:"smooth"})});
  if(ls(KEY))unlock();else{setTimeout(function(){Array.prototype.forEach.call(locks,function(el){keep[el.id]=el.textContent});lockUI()},0)}
- function gate(k,form){$(k+"Form").addEventListener("submit",function(e){e.preventDefault();var n=$(k+"Name").value,p=$(k+"Phone").value;
-  if(!check(n,p,$(k+"Ok").checked,k+"Err"))return;ls(KEY,"1");send({form:form,name:n,phone:p,website:$(k+"Web").value},true);unlock();
-  var t=$(form==="availability"?"masterplan":"pricing");if(t)t.scrollIntoView({behavior:"smooth"})});
-  ["Name","Phone","Ok"].forEach(function(f){$(k+f).addEventListener("input",function(){$(k+"Err").textContent=""})})}
- gate("gm","availability");gate("gc","cost");
+ otpFlow("gm","availability","Show available plots",function(){unlock();var t=$("masterplan");if(t)t.scrollIntoView({behavior:"smooth"})});
+ otpFlow("gc","cost","Show prices",function(){unlock();var t=$("pricing");if(t)t.scrollIntoView({behavior:"smooth"})});
+ ["gm","gc"].forEach(function(k){["Name","Phone","Ok"].forEach(function(f){$(k+f).addEventListener("input",function(){$(k+"Err").textContent=""})})});
  /* enquiry and WhatsApp forms: save the lead, then let WhatsApp open */
  function hook(btn,pre,form){$(btn).addEventListener("click",function(e){var n=$(pre+"Name").value,p=$(pre+"Phone").value;
   if(!check(n,p,$(pre+"Ok").checked,pre+"Err")){e.preventDefault();e.stopImmediatePropagation();return}
