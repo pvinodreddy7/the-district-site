@@ -7,7 +7,7 @@ const BASE = (process.env.TELECRM_BASE_URL || 'https://next.telecrm.in/autoupdat
 const ENT = process.env.TELECRM_ENTERPRISE_ID || '68cd52806250edb0e55d94b1';
 const TOKEN = process.env.TELECRM_SYNC_TOKEN;
 const ACTION = String(process.env.TELECRM_WEB_ACTION || '1001').replace(/^ACTION_/, '');
-const FORMS = { brochure: 'Brochure download', enquiry: 'Enquiry form', whatsapp: 'WhatsApp form' };
+const FORMS = { brochure: 'Brochure download', enquiry: 'Enquiry form', whatsapp: 'WhatsApp form', availability: 'Plot availability', cost: 'Prices and EMI' };
 const ALLOWED = /^https:\/\/((new|www)\.)?thedistrictbynavilu\.com$|^https:\/\/the-district-site[a-z0-9-]*\.vercel\.app$/;
 
 function normalisePhone(input) {
@@ -58,7 +58,7 @@ module.exports = async (req, res) => {
   if (!b.consent) return res.status(400).json({ ok: false, error: 'Please tick the consent box.' });
   if (!TOKEN) { console.error('TELECRM_SYNC_TOKEN not set'); return res.status(503).json({ ok: false, error: 'not configured' }); }
 
-  const need = clip(b.need, 120), plot = clip(b.plot, 40), msg = clip(b.msg, 1000), camp = clip(b.campaign, 300);
+  const need = clip(b.need, 120) || ((form === 'availability' || form === 'cost') ? 'to see ' + FORMS[form].toLowerCase() : ''), plot = clip(b.plot, 40), msg = clip(b.msg, 1000), camp = clip(b.campaign, 300);
   let date = '';
   if (/^\d{4}-\d{2}-\d{2}$/.test(b.date || '')) date = b.date.split('-').reverse().join('/') + ' 10:00:00';
 
