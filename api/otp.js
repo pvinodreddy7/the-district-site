@@ -1,4 +1,4 @@
-// Sends a 6-digit WhatsApp OTP through an AiSensy API campaign (authentication template).
+// Website OTP. Sends a 6-digit WhatsApp OTP through an AiSensy API campaign (authentication template).
 // Stateless: returns a signed token (expiry + HMAC of phone|code|expiry); /api/lead checks the code against it.
 // Env: AISENSY_API_KEY, AISENSY_OTP_CAMPAIGN (API campaign name), OTP_SECRET (long random string).
 
