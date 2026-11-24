@@ -428,6 +428,16 @@ details summary:hover{color:var(--teal)}
 @media (prefers-reduced-motion:no-preference){.wamodal:not([hidden]) .wabox{animation:waIn .22s var(--ease-enter) both}@keyframes waIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}}
 @media (max-width:640px){.wamodal{padding:0;align-items:flex-end}.wabox{width:100%;border-radius:16px 16px 0 0;max-height:92vh;padding:20px 18px calc(20px + env(safe-area-inset-bottom))}}
 
+/* lead capture */
+.consent{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:.82rem;color:var(--muted);line-height:1.45;cursor:pointer}
+.consent input{width:18px;height:18px;min-height:0;margin-top:1px;accent-color:var(--teal);flex:none}
+.lerr{color:#b42318;font-size:.84rem;margin:10px 0 0;font-weight:600}
+.lerr:empty{display:none}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.bmodal{align-items:center;justify-content:center}
+#brSend{width:100%;margin-top:18px}
+.lok{background:#e7f4ec;border:1px solid #b5dcc4;color:#14532d;border-radius:10px;padding:12px 14px;font-size:.9rem;margin-top:14px}
+
 /* review fixes */
 @media (max-width:600px){.mtable{min-width:0}.mscroll{overflow:visible}}
 .menubtn{display:none;width:44px;height:44px;border:1px solid var(--line);border-radius:8px;background:var(--sheet);flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;flex:none}
@@ -860,8 +870,11 @@ details summary:hover{color:var(--teal)}
           <div class="field"><label for="qDate">Preferred visit date</label><input type="date" id="qDate"></div>
         </div>
         <div class="field"><label for="qMsg">Anything else</label><textarea id="qMsg" rows="3"></textarea></div>
+        <div class="field"><label for="qPhone">Your mobile number</label><input type="tel" id="qPhone" autocomplete="tel" inputmode="tel" placeholder="10-digit mobile"></div>
+        <label class="consent"><input type="checkbox" id="qOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email.</label>
+        <p class="lerr" id="qErr" role="alert"></p>
         <a class="btn" id="qSend" style="width:100%;margin-top:18px" target="_blank" rel="noopener" href="#">Send on WhatsApp</a>
-        <p class="fine">Opens WhatsApp with your message ready to send. Nothing is sent until you press send there.</p>
+        <p class="fine">We save your details so the sales team can call you back, then open WhatsApp with your message ready to send.</p>
       </div>
       <div>
         <h3 style="color:#fff">Sales office</h3>
@@ -1147,14 +1160,30 @@ applyFilters();renderPanel();calc();enquiry();
   <div class="wabox" role="dialog" aria-modal="true" aria-labelledby="waTitle">
     <div class="wahead"><h3 id="waTitle">Send us a message on WhatsApp</h3><button type="button" class="waclose" id="waClose" aria-label="Close">✕</button></div>
     <div class="field" style="margin-top:0"><label for="wName">Your name</label><input type="text" id="wName" autocomplete="name"></div>
+    <div class="field"><label for="wPhone">Your mobile number</label><input type="tel" id="wPhone" autocomplete="tel" inputmode="tel" placeholder="10-digit mobile"></div>
     <div class="field"><label for="wNeed">I would like</label>
       <select id="wNeed"><option>a site visit</option><option>the cost sheet</option><option>a call back</option><option>help with a loan</option></select></div>
     <div class="field"><label for="wPlot">Plot of interest</label><input type="text" id="wPlot" placeholder="For example 47"></div>
     <div class="field"><label for="wDate">Preferred visit date</label><input type="date" id="wDate"></div>
     <div class="field"><label for="wMsg">Anything else</label><textarea id="wMsg" rows="3"></textarea></div>
+    <label class="consent"><input type="checkbox" id="wOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email.</label>
+    <p class="lerr" id="wErr" role="alert"></p>
     <a class="btn" id="wSend" style="width:100%;margin-top:18px" target="_blank" rel="noopener" href="#">Send on WhatsApp</a>
-    <p class="fine">Opens WhatsApp with your message ready to send. Nothing is sent until you press send there.</p>
+    <p class="fine">We save your details so the sales team can call you back, then open WhatsApp with your message ready to send.</p>
   </div>
+</div>
+<div class="wamodal bmodal" id="brModal" hidden>
+  <form class="wabox" id="brForm" role="dialog" aria-modal="true" aria-labelledby="brTitle" novalidate>
+    <div class="wahead"><h3 id="brTitle">Get the brochure</h3><button type="button" class="waclose" id="brClose" aria-label="Close">✕</button></div>
+    <p class="fine" style="margin:0 0 4px">15 pages: the tropical theme, amenities, master plan and location. PDF, 3 MB.</p>
+    <div class="field"><label for="bName">Your name</label><input type="text" id="bName" autocomplete="name"></div>
+    <div class="field"><label for="bPhone">Your mobile number</label><input type="tel" id="bPhone" autocomplete="tel" inputmode="tel" placeholder="10-digit mobile"></div>
+    <div class="hp" aria-hidden="true"><label for="bWeb">Website</label><input type="text" id="bWeb" tabindex="-1" autocomplete="off"></div>
+    <label class="consent"><input type="checkbox" id="bOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email.</label>
+    <p class="lerr" id="bErr" role="alert"></p>
+    <button class="btn" id="brSend" type="submit">Download brochure</button>
+    <div id="bDone" hidden class="lok">Thank you. Your download has started. If it did not, <a id="bLink" href="the-district-brochure.pdf" download="The-District-by-Navilu-Brochure.pdf">tap here</a>.</div>
+  </form>
 </div>
 <a class="wafab" id="waFab" aria-haspopup="dialog" href="https://wa.me/919916147778?text=Hi%2C%20I%20am%20interested%20in%20The%20District%20by%20Navilu.%20Please%20share%20plot%20availability%20and%20a%20cost%20sheet." target="_blank" rel="noopener" aria-label="Chat with the sales team on WhatsApp">
 <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#fff" d="M16 3.2A12.7 12.7 0 0 0 5.1 22.4L3.3 28.8l6.6-1.7A12.7 12.7 0 1 0 16 3.2Zm0 23.2a10.5 10.5 0 0 1-5.4-1.5l-.4-.2-3.9 1 1-3.8-.3-.4a10.5 10.5 0 1 1 9 4.9Zm5.8-7.9c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1a8.6 8.6 0 0 1-2.5-1.6 9.6 9.6 0 0 1-1.8-2.2c-.2-.3 0-.5.1-.7l.5-.6a2.3 2.3 0 0 0 .3-.5.6.6 0 0 0 0-.6c0-.2-.7-1.7-1-2.3s-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4 3.6 3.6 0 0 0-1.1 2.7 6.3 6.3 0 0 0 1.3 3.4 14.5 14.5 0 0 0 5.6 4.9c.8.3 1.4.5 1.8.7a4.4 4.4 0 0 0 2 .1 3.3 3.3 0 0 0 2.2-1.5 2.7 2.7 0 0 0 .2-1.5c-.1-.1-.3-.2-.6-.4Z"/></svg>
@@ -1228,6 +1257,39 @@ applyFilters();renderPanel();calc();enquiry();
     var t2=draw(road,s,{dur:2.2,stagger:0,group:2});
     var dots=s.querySelectorAll('circle[fill="#b3261e"],circle[fill="#d9a94a"]');
     if(t2&&dots.length)t2.from(dots,{scale:0,transformOrigin:"50% 50%",duration:.5,ease:"power3.out",stagger:.12},"-=.5")}
+})();
+</script>
+<script>
+(function(){
+ var API="/api/lead",BR="the-district-brochure.pdf",KEY="tdLead";
+ function $(id){return document.getElementById(id)}
+ function ss(k,v){try{if(v===undefined)return sessionStorage.getItem(k);sessionStorage.setItem(k,v)}catch(e){return null}}
+ function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+ (function(){var q=new URLSearchParams(location.search),t=[];["utm_source","utm_medium","utm_campaign","utm_content","gclid","fbclid"].forEach(function(k){if(q.get(k))t.push(k.replace("utm_","")+"="+q.get(k))});
+  if(!t.length&&document.referrer&&document.referrer.indexOf(location.host)<0)t.push("referrer="+document.referrer.split("/")[2]);
+  if(t.length&&!ss("tdCamp"))ss("tdCamp",t.join(", "))})();
+ function phoneOk(p){var d=(p||"").replace(/\D/g,"");if(d.length===12&&d.indexOf("91")===0)d=d.slice(2);if(d.length===11&&d[0]==="0")d=d.slice(1);return (d.length===10&&/^[6-9]/.test(d))||(/^\+/.test(p.trim())&&d.length>=8)}
+ function check(n,p,ok,err){var m="";if(n.trim().length<2)m="Please enter your name.";else if(!phoneOk(p))m="Please enter a valid mobile number.";else if(!ok)m="Please tick the box so we can contact you.";$(err).textContent=m;return !m}
+ function send(data,keep){data.campaign=ss("tdCamp")||"";data.page=location.pathname+location.hash;data.consent=true;
+  try{return fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data),keepalive:!!keep}).then(function(r){if(r.ok)ls(KEY,"1");return r.ok}).catch(function(){return false})}catch(e){return Promise.resolve(false)}}
+ function download(){var a=document.createElement("a");a.href=BR;a.download="The-District-by-Navilu-Brochure.pdf";document.body.appendChild(a);a.click();a.remove()}
+ /* brochure gate */
+ var m=$("brModal"),last=null;
+ function open(){last=document.activeElement;m.hidden=false;document.body.style.overflow="hidden";$("bDone").hidden=true;$("brSend").hidden=false;setTimeout(function(){$("bName").focus()},30)}
+ function close(){if(m.hidden)return;m.hidden=true;document.body.style.overflow="";if(last&&last.focus)last.focus()}
+ document.addEventListener("click",function(e){var l=e.target.closest("[data-broch]");if(!l)return;if(ls(KEY))return;e.preventDefault();open()});
+ $("brClose").addEventListener("click",close);m.addEventListener("click",function(e){if(e.target===m)close()});
+ document.addEventListener("keydown",function(e){if(!m.hidden&&e.key==="Escape")close()});
+ $("brForm").addEventListener("submit",function(e){e.preventDefault();var n=$("bName").value,p=$("bPhone").value;
+  if(!check(n,p,$("bOk").checked,"bErr"))return;var b=$("brSend");b.disabled=true;b.textContent="Preparing your download…";
+  var done=false;function go(){if(done)return;done=true;ls(KEY,"1");download();b.disabled=false;b.textContent="Download brochure";b.hidden=true;$("bDone").hidden=false}
+  send({form:"brochure",name:n,phone:p,website:$("bWeb").value}).then(go);setTimeout(go,4000)});
+ /* enquiry and WhatsApp forms: save the lead, then let WhatsApp open */
+ function hook(btn,pre,form){$(btn).addEventListener("click",function(e){var n=$(pre+"Name").value,p=$(pre+"Phone").value;
+  if(!check(n,p,$(pre+"Ok").checked,pre+"Err")){e.preventDefault();e.stopImmediatePropagation();return}
+  send({form:form,name:n,phone:p,need:$(pre+"Need").value,plot:$(pre+"Plot").value,date:$(pre+"Date").value,msg:$(pre+"Msg").value},true)},true)}
+ ["b","q","w"].forEach(function(k){["Name","Phone","Ok"].forEach(function(f){var el=$(k+f);if(el)el.addEventListener("input",function(){$(k+"Err").textContent=""})})});
+ hook("qSend","q","enquiry");hook("wSend","w","whatsapp");
 })();
 </script>
 </body>
