@@ -343,7 +343,11 @@ section,header.hero,#status,#top{scroll-margin-top:92px}
 .mtable th{position:static;background:transparent}
 .tick{color:#1f7d55;font-weight:700;margin-right:6px}
 .next{color:var(--brass);font-weight:700;margin-right:6px}
+#why .wcard.wide{grid-row:span 2}
+#why .wcard.span2{grid-column:span 2}
 @media (max-width:900px){.wgrid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:900px){#why .wcard.wide{grid-row:auto}}
+@media (max-width:600px){#why .wcard.span2{grid-column:auto}}
 @media (max-width:600px){.wgrid{grid-template-columns:1fr}.wcard.wide{grid-column:auto}}
 #strr .wgrid{grid-template-columns:repeat(2,1fr)}@media(max-width:640px){#strr .wgrid{grid-template-columns:1fr}}
 /* ---- polish layer: one motion system, visible hover and press, focus, contrast, touch sizes ---- */
@@ -549,7 +553,7 @@ details summary:hover{color:var(--teal)}
 <div class="wcard"><span class="wnum num">05</span><h3>One clear price</h3><p>One per sq ft rate across the layout, plus a ₹1.5 lakh clubhouse charge per plot. Pick your exact plot on the master plan and see its value before you call.</p></div>
 <div class="wcard"><span class="wnum num">06</span><h3>Metro within reach today</h3><p>The Yellow Line to Bommasandra is running, with the station 15 to 20 minutes away. An extension towards Attibele is being planned, and the state has said it will consider a link towards Jigani.</p></div>
 <div class="wcard"><span class="wnum num">07</span><h3>Built-in rental demand</h3><p>Homes here have a ready tenant base: the pharma and technology employers on the Jigani and Bommasandra link road, and the students, faculty and staff of IIM Bangalore's new Jigani campus. One property portal puts the rental yield in Jigani at 4.49%. <a href="https://www.squareyards.com/property-rates/jigani-bangalore" target="_blank" rel="noopener">Source</a></p></div>
-<div class="wcard"><span class="wnum num">08</span><h3>A tropical themed community</h3><p>The layout follows a tropical theme. A clubhouse, swimming pool, pickleball courts, a Miyawaki forest and tropical themed parks are being built for residents.</p></div>
+<div class="wcard span2"><span class="wnum num">08</span><h3>A tropical themed community</h3><p>The layout follows a tropical theme. A clubhouse, swimming pool, pickleball courts, a Miyawaki forest and tropical themed parks are being built for residents.</p></div>
     </div>
     <p class="fine">Based on public announcements as of November 2026. Timelines can change, and past price trends do not guarantee future prices. Read more in the <a href="#blog" data-go="blog">articles below</a>.</p>
     <div class="cta"><a class="btn" href="#masterplan" data-go="masterplan">See what is available</a><a class="btn ghost" href="#contact" data-go="contact">Book a site visit</a></div>
