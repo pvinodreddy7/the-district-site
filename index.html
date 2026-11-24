@@ -269,7 +269,7 @@ footer p{max-width:95ch;margin-top:8px}
 .hero .btn.ghost{background:transparent;border-color:rgba(255,255,255,.75);color:#fff}
 .hero .btn.ghost:hover{background:rgba(255,255,255,.12)}
 .hero .statwrap{padding-bottom:60px}
-.hero .stats{background:transparent;border:0;border-top:1px solid rgba(255,255,255,.3);border-radius:0;margin-top:0;max-width:880px}
+.hero .stats{grid-template-columns:repeat(3,auto);justify-content:start;column-gap:24px;background:transparent;border:0;border-top:1px solid rgba(255,255,255,.3);border-radius:0;margin-top:0;max-width:880px}
 .hero .stats div{border:0 !important;padding:24px 24px 0 0}
 .hero .stats b{color:#f0cf86}
 .hero .stats span{color:#c9d6d3}
@@ -428,6 +428,7 @@ details summary:hover{color:var(--teal)}
 @media (prefers-reduced-motion:no-preference){.wamodal:not([hidden]) .wabox{animation:waIn .22s var(--ease-enter) both}@keyframes waIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}}
 @media (max-width:640px){.wamodal{padding:0;align-items:flex-end}.wabox{width:100%;border-radius:16px 16px 0 0;max-height:92vh;padding:20px 18px calc(20px + env(safe-area-inset-bottom))}}
 
+@media (max-width:640px){.hero .stats{grid-template-columns:1fr 1fr}.hero .stats div:last-child{grid-column:1/-1}}
 /* gated sections */
 .gate{position:relative}
 .gate.locked>.gated{filter:blur(7px) saturate(.7);opacity:.55;pointer-events:none;user-select:none}
@@ -525,7 +526,6 @@ details summary:hover{color:var(--teal)}
   <div class="wrap statwrap">
     <div class="stats">
       <div><b class="num">226</b><span>plots in the approved layout</span></div>
-      <div><b class="num" id="stAvail" data-lock="avail"></b><span>available as on <span class="asofd"></span></span></div>
       <div><b class="num" id="stRate" data-lock="cost">₹4,500</b><span>per sq ft, plus clubhouse charge</span></div>
       <div><b class="num" id="stRange"></b><span>sq ft, range of available plots</span></div>
     </div>
@@ -970,7 +970,7 @@ document.addEventListener("click",function(e){var a=e.target.closest("[data-go]"
 /* headline numbers */
 var avail=P.filter(function(p){return p.s==="A"});
 var areas=avail.map(function(p){return p.a});
-$("stAvail").textContent=avail.length;
+
 $("stRange").textContent=num(Math.min.apply(null,areas))+" to "+num(Math.max.apply(null,areas));
 Array.prototype.forEach.call(document.querySelectorAll(".asofd"),function(e){e.textContent=CFG.asOn});
 $("telLink").textContent=CFG.phone;$("telLink").href="tel:"+CFG.phone.replace(/\s/g,"");
