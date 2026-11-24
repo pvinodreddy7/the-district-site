@@ -429,6 +429,7 @@ details summary:hover{color:var(--teal)}
 @media (max-width:640px){.wamodal{padding:0;align-items:flex-end}.wabox{width:100%;border-radius:16px 16px 0 0;max-height:92vh;padding:20px 18px calc(20px + env(safe-area-inset-bottom))}}
 
 @media (max-width:640px){.hero .stats{grid-template-columns:1fr 1fr}.hero .stats div:last-child{grid-column:1/-1}}
+.stats b .unit{font-size:.55em;font-weight:600;letter-spacing:0}
 /* gated sections */
 .gate{position:relative}
 .gate.locked>.gated{filter:blur(7px) saturate(.7);opacity:.55;pointer-events:none;user-select:none}
@@ -490,18 +491,18 @@ details summary:hover{color:var(--teal)}
     <span class="devlogo" role="img" aria-label="A Navilu Realty project"><svg viewBox="0 0 1187 325" aria-hidden="true"><use href="#nrlogo"/></svg></span>
     <nav aria-label="Sections">
       <a href="#project" data-go="project">Project</a>
-      <a href="#masterplan" data-go="masterplan">Master plan</a>
-      <a href="#pricing" data-go="pricing">Pricing and EMI</a>
       <a href="#amenities" data-go="amenities">Amenities</a>
       <a href="#location" data-go="location">Location</a>
       <a href="#status" data-go="status">Status</a>
+      <a href="#masterplan" data-go="masterplan">Master plan</a>
+      <a href="#pricing" data-go="pricing">Pricing and EMI</a>
       <a href="#blog" data-go="blog">Blog</a>
     </nav>
     <a class="btn sm" href="#contact" data-go="contact">Book a site visit</a>
     <button class="menubtn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mnav" aria-label="Open menu"><span></span><span></span><span></span></button>
   </div>
   <nav class="mnav" id="mnav" aria-label="Sections" hidden>
-    <a href="#project" data-go="project">Project</a><a href="#masterplan" data-go="masterplan">Master plan</a><a href="#pricing" data-go="pricing">Pricing and EMI</a><a href="#amenities" data-go="amenities">Amenities</a><a href="#location" data-go="location">Location</a><a href="#status" data-go="status">Status</a><a href="#blog" data-go="blog">Blog</a><a href="#contact" data-go="contact">Contact</a>
+    <a href="#project" data-go="project">Project</a><a href="#amenities" data-go="amenities">Amenities</a><a href="#location" data-go="location">Location</a><a href="#status" data-go="status">Status</a><a href="#masterplan" data-go="masterplan">Master plan</a><a href="#pricing" data-go="pricing">Pricing and EMI</a><a href="#blog" data-go="blog">Blog</a><a href="#contact" data-go="contact">Contact</a>
   </nav>
 </div>
 
@@ -527,7 +528,7 @@ details summary:hover{color:var(--teal)}
     <div class="stats">
       <div><b class="num">226</b><span>plots in the approved layout</span></div>
       <div><b class="num" id="stRate" data-lock="cost">₹4,500</b><span>per sq ft, plus clubhouse charge</span></div>
-      <div><b class="num" id="stRange"></b><span>sq ft, range of available plots</span></div>
+      <div><b class="num" id="stRange"></b><span>range of available plot sizes</span></div>
     </div>
   </div>
 </header>
@@ -592,132 +593,6 @@ details summary:hover{color:var(--teal)}
       <img src="aerial.jpg" width="1600" height="900" loading="lazy" alt="Aerial view of The District layout showing plot blocks, internal roads and green areas">
       <figcaption>Aerial view of the layout</figcaption>
     </figure>
-  </div>
-</section>
-
-<section id="masterplan">
-  <div class="wrap" style="max-width:1340px">
-    <div class="eyebrow">Master plan</div>
-    <h2>Pick your plot from the approved plan.</h2>
-    <p class="lede">Every plot from the approved layout, with live availability. Tap a plot for its size, facing, area and indicative value.</p>
-
-    <div class="gate locked" id="gMap"><div class="gated">
-    <div class="filters" id="filters">
-      <div class="fgroup" data-g="size"><span>Size</span>
-        <button class="chip" data-v="all" aria-pressed="true">All</button>
-        <button class="chip" data-v="30x40" aria-pressed="false">30 × 40</button>
-        <button class="chip" data-v="30x50" aria-pressed="false">30 × 50</button>
-        <button class="chip" data-v="other" aria-pressed="false">Other sizes</button>
-      </div>
-      <div class="fgroup" data-g="face"><span>Facing</span>
-        <button class="chip" data-v="all" aria-pressed="true">Any</button>
-        <button class="chip" data-v="East" aria-pressed="false">East</button>
-        <button class="chip" data-v="West" aria-pressed="false">West</button>
-        <button class="chip" data-v="North" aria-pressed="false">North</button>
-        <button class="chip" data-v="South" aria-pressed="false">South</button>
-      </div>
-      <div class="fgroup" data-g="phase"><span>Phase</span>
-        <button class="chip" data-v="all" aria-pressed="true">Both</button>
-        <button class="chip" data-v="1" aria-pressed="false">Phase I</button>
-        <button class="chip" data-v="2" aria-pressed="false">Phase II</button>
-      </div>
-      <div class="fgroup"><span>Show</span>
-        <button class="chip avail" id="fAvail" aria-pressed="false">Available only</button>
-        <button class="chip" id="fCorner" aria-pressed="false">Corner plots</button>
-      </div>
-    </div>
-
-    <div class="planrow">
-      <div>
-        <div class="mapbox" id="mapbox">
-          <svg id="map" class="m-plan" role="img" aria-label="Master plan of The District showing 226 plots with size and availability"></svg>
-          <div class="mode" role="group" aria-label="Colour plots by">
-            <button data-m="plan" aria-pressed="true">PLAN</button>
-            <button data-m="status" aria-pressed="false">AVAILABILITY</button>
-            <button data-m="3d" aria-pressed="false">3D</button>
-          </div>
-          <div class="maptools">
-            <button id="zin" aria-label="Zoom in">+</button>
-            <button id="zout" aria-label="Zoom out">−</button>
-            <button id="zreset" aria-label="Reset view">⟲</button>
-          </div>
-          <div class="maphint" id="maphint">Drag to pan. Click the plan, then scroll to zoom.</div>
-          <div class="north"><i>↑</i>N</div>
-          <div class="map3d" id="map3d" hidden></div>
-          <div class="tip" id="tip"></div>
-        </div>
-        <div class="legend" id="legend"></div>
-      </div>
-
-      <aside class="panel" id="panel" aria-live="polite"></aside>
-    </div>
-    </div>
-      <div class="gcard" role="region" aria-labelledby="gmT"><form class="gform" id="gmForm" novalidate>
-        <span class="glock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3h1.5A1.5 1.5 0 0 1 20 11.5v8A1.5 1.5 0 0 1 18.5 21h-13A1.5 1.5 0 0 1 4 19.5v-8A1.5 1.5 0 0 1 5.5 10H7Zm2 0h6V7a3 3 0 0 0-6 0v3Z" fill="currentColor"/></svg></span>
-        <h3 id="gmT">See live plot availability</h3><p class="fine">Enter your name and number to see which plots are open today, their sizes, facing and indicative value.</p>
-        <div class="two"><div class="field"><label for="gmName">Your name</label><input type="text" id="gmName" autocomplete="name"></div>
-        <div class="field"><label for="gmPhone">Mobile number</label><input type="tel" id="gmPhone" autocomplete="tel" inputmode="tel" placeholder="10-digit mobile"></div></div>
-        <div class="hp" aria-hidden="true"><input type="text" id="gmWeb" tabindex="-1" autocomplete="off"></div>
-        <label class="consent"><input type="checkbox" id="gmOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email.</label>
-        <p class="lerr" id="gmErr" role="alert"></p>
-        <button class="btn" type="submit" style="width:100%;margin-top:14px">Show available plots</button>
-        <p class="fine" style="margin-top:10px">One step unlocks plot availability, prices and the EMI calculator.</p>
-      </form></div>
-    </div>
-
-    <p class="asof">Availability as on <span class="asofd"></span>, from the sales inventory register. Status can change the same day, so confirm with the sales team before you decide. Plot numbers and boundaries follow the approved layout plan. Plan is indicative and not to be scaled for construction.</p>
-  </div>
-</section>
-
-<section id="pricing">
-  <div class="wrap">
-    <div class="eyebrow">Pricing and EMI</div>
-    <h2>Work out the cost before you call.</h2>
-    <p class="lede">One clear rate across the layout, plus a fixed clubhouse charge.</p>
-    <div class="gate locked" id="gCost"><div class="gated">
-    <div class="calc">
-      <div class="card">
-        <h3>Cost estimator</h3>
-        <div class="field"><label for="cPlot">Choose an available plot</label>
-          <select id="cPlot"></select></div>
-        <div class="field"><label for="cArea">Or enter an area in sq ft</label>
-          <input type="number" id="cArea" min="500" max="5000" step="1" inputmode="numeric"></div>
-        <div class="sum">
-          <div><span>Plot cost at ₹4,500 per sq ft</span><span class="num" id="cBase"></span></div>
-          <div><span>Clubhouse charge</span><span class="num">₹1,50,000</span></div>
-          <div class="total"><span>Indicative total</span><b class="num" id="cTotal"></b></div>
-        </div>
-        <p class="fine">Indicative. Stamp duty, registration fees and other statutory charges are extra. Ask for the cost sheet for the final figure.</p>
-      </div>
-      <div class="card">
-        <h3>EMI calculator</h3>
-        <div class="field"><label for="eDown">Down payment <output id="eDownO"></output></label>
-          <input type="range" id="eDown" min="10" max="90" step="5" value="20"></div>
-        <div class="field"><label for="eRate">Interest rate, per year <output id="eRateO"></output></label>
-          <input type="range" id="eRate" min="7" max="14" step="0.05" value="9.5"></div>
-        <div class="field"><label for="eTen">Tenure <output id="eTenO"></output></label>
-          <input type="range" id="eTen" min="10" max="30" step="1" value="20"></div>
-        <div class="sum">
-          <div><span>Loan amount</span><span class="num" id="eLoan"></span></div>
-          <div class="total"><span>Monthly EMI</span><b class="num" id="eEmi"></b></div>
-        </div>
-        <p class="fine">Based on the indicative total from the estimator. The project is approved by all major banks. Loan terms depend on your lender and eligibility.</p>
-      </div>
-    </div>
-    </div>
-      <div class="gcard" role="region" aria-labelledby="gcT"><form class="gform" id="gcForm" novalidate>
-        <span class="glock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3h1.5A1.5 1.5 0 0 1 20 11.5v8A1.5 1.5 0 0 1 18.5 21h-13A1.5 1.5 0 0 1 4 19.5v-8A1.5 1.5 0 0 1 5.5 10H7Zm2 0h6V7a3 3 0 0 0-6 0v3Z" fill="currentColor"/></svg></span>
-        <h3 id="gcT">See prices and EMI</h3><p class="fine">Enter your name and number to see the rate, work out the total for any plot and plan your EMI.</p>
-        <div class="two"><div class="field"><label for="gcName">Your name</label><input type="text" id="gcName" autocomplete="name"></div>
-        <div class="field"><label for="gcPhone">Mobile number</label><input type="tel" id="gcPhone" autocomplete="tel" inputmode="tel" placeholder="10-digit mobile"></div></div>
-        <div class="hp" aria-hidden="true"><input type="text" id="gcWeb" tabindex="-1" autocomplete="off"></div>
-        <label class="consent"><input type="checkbox" id="gcOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email.</label>
-        <p class="lerr" id="gcErr" role="alert"></p>
-        <button class="btn" type="submit" style="width:100%;margin-top:14px">Show prices</button>
-        <p class="fine" style="margin-top:10px">One step unlocks plot availability, prices and the EMI calculator.</p>
-      </form></div>
-    </div>
-    </div>
   </div>
 </section>
 
@@ -850,6 +725,132 @@ details summary:hover{color:var(--teal)}
     <p class="fine">Alignment: STRR Phase 2 right of way, 75 m wide, from the alignment file dated 31 May 2018. The final alignment may differ. PRR: Bengaluru Business Corridor alignment, October 2022, Bangalore Development Authority, from the <a href="https://data.opencity.in/dataset/bengaluru-peripheral-ring-road-documents-2020" target="_blank" rel="noopener">OpenCity PRR dataset</a>; an alternative alignment from October 2023 is also on record. Distances are straight lines from the project's map location to the edge of each right of way, not driving distances. The stadium position is as marked in the project's site mapping and is indicative. Town positions, existing roads and the national park outline are schematic. Status as publicly reported by <a href="https://themetrorailguy.com/?p=44710" target="_blank" rel="noopener">The Metro Rail Guy</a> and <a href="https://swarajyamag.com/infrastructure/bengalurus-280-km-satellite-town-ring-road-project-advances-as-new-tenders-issued-for-five-key-packages" target="_blank" rel="noopener">Swarajya</a>. Nothing here is a promise of price appreciation or of a completion date.</p>
   </div>
 </section>
+<section id="masterplan">
+  <div class="wrap" style="max-width:1340px">
+    <div class="eyebrow">Master plan</div>
+    <h2>Pick your plot from the approved plan.</h2>
+    <p class="lede">Every plot from the approved layout, with live availability. Tap a plot for its size, facing, area and indicative value.</p>
+
+    <div class="gate locked" id="gMap"><div class="gated">
+    <div class="filters" id="filters">
+      <div class="fgroup" data-g="size"><span>Size</span>
+        <button class="chip" data-v="all" aria-pressed="true">All</button>
+        <button class="chip" data-v="30x40" aria-pressed="false">30 × 40</button>
+        <button class="chip" data-v="30x50" aria-pressed="false">30 × 50</button>
+        <button class="chip" data-v="other" aria-pressed="false">Other sizes</button>
+      </div>
+      <div class="fgroup" data-g="face"><span>Facing</span>
+        <button class="chip" data-v="all" aria-pressed="true">Any</button>
+        <button class="chip" data-v="East" aria-pressed="false">East</button>
+        <button class="chip" data-v="West" aria-pressed="false">West</button>
+        <button class="chip" data-v="North" aria-pressed="false">North</button>
+        <button class="chip" data-v="South" aria-pressed="false">South</button>
+      </div>
+      <div class="fgroup" data-g="phase"><span>Phase</span>
+        <button class="chip" data-v="all" aria-pressed="true">Both</button>
+        <button class="chip" data-v="1" aria-pressed="false">Phase I</button>
+        <button class="chip" data-v="2" aria-pressed="false">Phase II</button>
+      </div>
+      <div class="fgroup"><span>Show</span>
+        <button class="chip avail" id="fAvail" aria-pressed="false">Available only</button>
+        <button class="chip" id="fCorner" aria-pressed="false">Corner plots</button>
+      </div>
+    </div>
+
+    <div class="planrow">
+      <div>
+        <div class="mapbox" id="mapbox">
+          <svg id="map" class="m-plan" role="img" aria-label="Master plan of The District showing 226 plots with size and availability"></svg>
+          <div class="mode" role="group" aria-label="Colour plots by">
+            <button data-m="plan" aria-pressed="true">PLAN</button>
+            <button data-m="status" aria-pressed="false">AVAILABILITY</button>
+            <button data-m="3d" aria-pressed="false">3D</button>
+          </div>
+          <div class="maptools">
+            <button id="zin" aria-label="Zoom in">+</button>
+            <button id="zout" aria-label="Zoom out">−</button>
+            <button id="zreset" aria-label="Reset view">⟲</button>
+          </div>
+          <div class="maphint" id="maphint">Drag to pan. Click the plan, then scroll to zoom.</div>
+          <div class="north"><i>↑</i>N</div>
+          <div class="map3d" id="map3d" hidden></div>
+          <div class="tip" id="tip"></div>
+        </div>
+        <div class="legend" id="legend"></div>
+      </div>
+
+      <aside class="panel" id="panel" aria-live="polite"></aside>
+    </div>
+    </div>
+      <div class="gcard" role="region" aria-labelledby="gmT"><form class="gform" id="gmForm" novalidate>
+        <span class="glock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3h1.5A1.5 1.5 0 0 1 20 11.5v8A1.5 1.5 0 0 1 18.5 21h-13A1.5 1.5 0 0 1 4 19.5v-8A1.5 1.5 0 0 1 5.5 10H7Zm2 0h6V7a3 3 0 0 0-6 0v3Z" fill="currentColor"/></svg></span>
+        <h3 id="gmT">See live plot availability</h3><p class="fine">Enter your name and number to see which plots are open today, their sizes, facing and indicative value.</p>
+        <div class="two"><div class="field"><label for="gmName">Your name</label><input type="text" id="gmName" autocomplete="name"></div>
+        <div class="field"><label for="gmPhone">Mobile number</label><input type="tel" id="gmPhone" autocomplete="tel" inputmode="tel" placeholder="10-digit mobile"></div></div>
+        <div class="hp" aria-hidden="true"><input type="text" id="gmWeb" tabindex="-1" autocomplete="off"></div>
+        <label class="consent"><input type="checkbox" id="gmOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email.</label>
+        <p class="lerr" id="gmErr" role="alert"></p>
+        <button class="btn" type="submit" style="width:100%;margin-top:14px">Show available plots</button>
+        <p class="fine" style="margin-top:10px">One step unlocks plot availability, prices and the EMI calculator.</p>
+      </form></div>
+    </div>
+
+    <p class="asof">Availability as on <span class="asofd"></span>, from the sales inventory register. Status can change the same day, so confirm with the sales team before you decide. Plot numbers and boundaries follow the approved layout plan. Plan is indicative and not to be scaled for construction.</p>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="eyebrow">Pricing and EMI</div>
+    <h2>Work out the cost before you call.</h2>
+    <p class="lede">One clear rate across the layout, plus a fixed clubhouse charge.</p>
+    <div class="gate locked" id="gCost"><div class="gated">
+    <div class="calc">
+      <div class="card">
+        <h3>Cost estimator</h3>
+        <div class="field"><label for="cPlot">Choose an available plot</label>
+          <select id="cPlot"></select></div>
+        <div class="field"><label for="cArea">Or enter an area in sq ft</label>
+          <input type="number" id="cArea" min="500" max="5000" step="1" inputmode="numeric"></div>
+        <div class="sum">
+          <div><span>Plot cost at ₹4,500 per sq ft</span><span class="num" id="cBase"></span></div>
+          <div><span>Clubhouse charge</span><span class="num">₹1,50,000</span></div>
+          <div class="total"><span>Indicative total</span><b class="num" id="cTotal"></b></div>
+        </div>
+        <p class="fine">Indicative. Stamp duty, registration fees and other statutory charges are extra. Ask for the cost sheet for the final figure.</p>
+      </div>
+      <div class="card">
+        <h3>EMI calculator</h3>
+        <div class="field"><label for="eDown">Down payment <output id="eDownO"></output></label>
+          <input type="range" id="eDown" min="10" max="90" step="5" value="20"></div>
+        <div class="field"><label for="eRate">Interest rate, per year <output id="eRateO"></output></label>
+          <input type="range" id="eRate" min="7" max="14" step="0.05" value="9.5"></div>
+        <div class="field"><label for="eTen">Tenure <output id="eTenO"></output></label>
+          <input type="range" id="eTen" min="10" max="30" step="1" value="20"></div>
+        <div class="sum">
+          <div><span>Loan amount</span><span class="num" id="eLoan"></span></div>
+          <div class="total"><span>Monthly EMI</span><b class="num" id="eEmi"></b></div>
+        </div>
+        <p class="fine">Based on the indicative total from the estimator. The project is approved by all major banks. Loan terms depend on your lender and eligibility.</p>
+      </div>
+    </div>
+    </div>
+      <div class="gcard" role="region" aria-labelledby="gcT"><form class="gform" id="gcForm" novalidate>
+        <span class="glock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3h1.5A1.5 1.5 0 0 1 20 11.5v8A1.5 1.5 0 0 1 18.5 21h-13A1.5 1.5 0 0 1 4 19.5v-8A1.5 1.5 0 0 1 5.5 10H7Zm2 0h6V7a3 3 0 0 0-6 0v3Z" fill="currentColor"/></svg></span>
+        <h3 id="gcT">See prices and EMI</h3><p class="fine">Enter your name and number to see the rate, work out the total for any plot and plan your EMI.</p>
+        <div class="two"><div class="field"><label for="gcName">Your name</label><input type="text" id="gcName" autocomplete="name"></div>
+        <div class="field"><label for="gcPhone">Mobile number</label><input type="tel" id="gcPhone" autocomplete="tel" inputmode="tel" placeholder="10-digit mobile"></div></div>
+        <div class="hp" aria-hidden="true"><input type="text" id="gcWeb" tabindex="-1" autocomplete="off"></div>
+        <label class="consent"><input type="checkbox" id="gcOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email.</label>
+        <p class="lerr" id="gcErr" role="alert"></p>
+        <button class="btn" type="submit" style="width:100%;margin-top:14px">Show prices</button>
+        <p class="fine" style="margin-top:10px">One step unlocks plot availability, prices and the EMI calculator.</p>
+      </form></div>
+    </div>
+    </div>
+  </div>
+</section>
+
 <section id="blog" style="padding-top:0">
   <div class="wrap">
     <div class="eyebrow">Around The District</div>
@@ -971,7 +972,7 @@ document.addEventListener("click",function(e){var a=e.target.closest("[data-go]"
 var avail=P.filter(function(p){return p.s==="A"});
 var areas=avail.map(function(p){return p.a});
 
-$("stRange").textContent=num(Math.min.apply(null,areas))+" to "+num(Math.max.apply(null,areas));
+$("stRange").innerHTML=num(Math.min.apply(null,areas))+" to "+num(Math.max.apply(null,areas))+"<small class='unit'> sq ft</small>";
 Array.prototype.forEach.call(document.querySelectorAll(".asofd"),function(e){e.textContent=CFG.asOn});
 $("telLink").textContent=CFG.phone;$("telLink").href="tel:"+CFG.phone.replace(/\s/g,"");
 
