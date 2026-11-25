@@ -256,6 +256,7 @@ details p{color:var(--muted);margin-top:8px;max-width:70ch}
 @media (max-width:820px){.cgrid{grid-template-columns:1fr}.two{grid-template-columns:1fr}}
 footer{padding:34px 0 50px;font-size:.8rem;color:var(--muted)}
 footer p{max-width:95ch;margin-top:8px}
+footer .legal a{color:var(--ink);font-weight:600}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.plot polygon{transition:none}}
 /* full-bleed hero over the entrance render */
 .hero{position:relative;padding:0;background:#0b2a2c url(entrance.jpg) 62% center/cover no-repeat;color:#fff}
@@ -811,7 +812,7 @@ details summary:hover{color:var(--teal)}
         <div class="two"><div class="field"><label for="gmName">Your name</label><input type="text" id="gmName" autocomplete="name"></div>
         <div class="field"><label for="gmPhone">Mobile number</label><input type="tel" id="gmPhone" autocomplete="tel" inputmode="tel" placeholder="10-digit mobile"></div></div>
         <div class="hp" aria-hidden="true"><input type="text" id="gmWeb" tabindex="-1" autocomplete="off"></div>
-        <label class="consent"><input type="checkbox" id="gmOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email.</label>
+        <label class="consent"><input type="checkbox" id="gmOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email, as set out in the <a href="/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="/terms" target="_blank" rel="noopener">Terms</a>.</label>
         <div class="otpbox" id="gmOtpBox" hidden><div class="field"><label for="gmOtp">Enter the 6-digit code we sent to your WhatsApp</label><input type="text" id="gmOtp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••"></div><p class="otplinks"><button type="button" class="linkbtn" id="gmResend">Resend code</button><span id="gmWait"></span> · <button type="button" class="linkbtn" id="gmChange">Change number</button></p></div>
         <p class="lerr" id="gmErr" role="alert"></p>
         <button class="btn" id="gmSend" type="submit" style="width:100%;margin-top:14px">Show available plots</button>
@@ -865,7 +866,7 @@ details summary:hover{color:var(--teal)}
         <div class="two"><div class="field"><label for="gcName">Your name</label><input type="text" id="gcName" autocomplete="name"></div>
         <div class="field"><label for="gcPhone">Mobile number</label><input type="tel" id="gcPhone" autocomplete="tel" inputmode="tel" placeholder="10-digit mobile"></div></div>
         <div class="hp" aria-hidden="true"><input type="text" id="gcWeb" tabindex="-1" autocomplete="off"></div>
-        <label class="consent"><input type="checkbox" id="gcOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email.</label>
+        <label class="consent"><input type="checkbox" id="gcOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email, as set out in the <a href="/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="/terms" target="_blank" rel="noopener">Terms</a>.</label>
         <div class="otpbox" id="gcOtpBox" hidden><div class="field"><label for="gcOtp">Enter the 6-digit code we sent to your WhatsApp</label><input type="text" id="gcOtp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••"></div><p class="otplinks"><button type="button" class="linkbtn" id="gcResend">Resend code</button><span id="gcWait"></span> · <button type="button" class="linkbtn" id="gcChange">Change number</button></p></div>
         <p class="lerr" id="gcErr" role="alert"></p>
         <button class="btn" id="gcSend" type="submit" style="width:100%;margin-top:14px">Show prices</button>
@@ -939,7 +940,7 @@ details summary:hover{color:var(--teal)}
         </div>
         <div class="field"><label for="qMsg">Anything else</label><textarea id="qMsg" rows="3"></textarea></div>
         <div class="field"><label for="qPhone">Your mobile number</label><input type="tel" id="qPhone" autocomplete="tel" inputmode="tel" placeholder="10-digit mobile"></div>
-        <label class="consent"><input type="checkbox" id="qOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email.</label>
+        <label class="consent"><input type="checkbox" id="qOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email, as set out in the <a href="/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="/terms" target="_blank" rel="noopener">Terms</a>.</label>
         <p class="lerr" id="qErr" role="alert"></p>
         <a class="btn" id="qSend" style="width:100%;margin-top:18px" target="_blank" rel="noopener" href="#">Send on WhatsApp</a>
         <p class="fine">We save your details so the sales team can call you back, then open WhatsApp with your message ready to send.</p>
@@ -966,6 +967,7 @@ details summary:hover{color:var(--teal)}
     </div>
     <b style="color:var(--ink)">The District by Navilu</b> · RERA registration PRM/KA/RERA/1251/308/PR/250825/008029 · <a href="https://rera.karnataka.gov.in" target="_blank" rel="noopener">rera.karnataka.gov.in</a>
     <p>This page is for information only and is not a legal offer. Plot status, prices and specifications can change without notice. The master plan is drawn from the approved layout plan and is indicative. Areas and dimensions are as per the approved plan and the sale deed will prevail. Amenities shown as being built are under development, and their final design may be refined during construction. Images of the project are artist's impressions and are indicative only. Photographs in the articles show other places and are credited in each article. The finished development and amenities may differ.</p>
+      <p class="legal"><a href="/privacy-policy">Privacy Policy</a> · <a href="/terms">Terms of Use</a> · © 2026 Naville Estates LLP</p>
   </div>
 </footer>
 
@@ -973,7 +975,7 @@ details summary:hover{color:var(--teal)}
 <script>
 (function(){
 "use strict";
-var CFG={rate:4500,club:150000,asOn:"20 Nov 2026",wa:"919916147778",phone:"+91 99161 47778"};
+var CFG={rate:4500,club:150000,asOn:"20 Nov 2026",wa:"919916147779",phone:"+91 99161 47779"};
 var D=JSON.parse(document.getElementById("plan-data").textContent);
 var P=D.plots,W=D.w,H=D.h,NS="http://www.w3.org/2000/svg";
 /* corner plots with a south side are shown by their other facing */
@@ -1234,7 +1236,7 @@ applyFilters();renderPanel();calc();enquiry();
     <div class="field"><label for="wPlot">Plot of interest</label><input type="text" id="wPlot" placeholder="For example 47"></div>
     <div class="field"><label for="wDate">Preferred visit date</label><input type="date" id="wDate"></div>
     <div class="field"><label for="wMsg">Anything else</label><textarea id="wMsg" rows="3"></textarea></div>
-    <label class="consent"><input type="checkbox" id="wOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email.</label>
+    <label class="consent"><input type="checkbox" id="wOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email, as set out in the <a href="/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="/terms" target="_blank" rel="noopener">Terms</a>.</label>
     <p class="lerr" id="wErr" role="alert"></p>
     <a class="btn" id="wSend" style="width:100%;margin-top:18px" target="_blank" rel="noopener" href="#">Send on WhatsApp</a>
     <p class="fine">We save your details so the sales team can call you back, then open WhatsApp with your message ready to send.</p>
@@ -1247,14 +1249,14 @@ applyFilters();renderPanel();calc();enquiry();
     <div class="field"><label for="bName">Your name</label><input type="text" id="bName" autocomplete="name"></div>
     <div class="field"><label for="bPhone">Your mobile number</label><input type="tel" id="bPhone" autocomplete="tel" inputmode="tel" placeholder="10-digit mobile"></div>
     <div class="hp" aria-hidden="true"><label for="bWeb">Website</label><input type="text" id="bWeb" tabindex="-1" autocomplete="off"></div>
-    <label class="consent"><input type="checkbox" id="bOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email.</label>
+    <label class="consent"><input type="checkbox" id="bOk"> I agree to be contacted by The District by Navilu about this project by phone, WhatsApp or email, as set out in the <a href="/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="/terms" target="_blank" rel="noopener">Terms</a>.</label>
     <div class="otpbox" id="bOtpBox" hidden><div class="field"><label for="bOtp">Enter the 6-digit code we sent to your WhatsApp</label><input type="text" id="bOtp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••"></div><p class="otplinks"><button type="button" class="linkbtn" id="bResend">Resend code</button><span id="bWait"></span> · <button type="button" class="linkbtn" id="bChange">Change number</button></p></div>
         <p class="lerr" id="bErr" role="alert"></p>
     <button class="btn" id="brSend" type="submit">Download brochure</button>
     <div id="bDone" hidden class="lok">Thank you. Your download has started. If it did not, <a id="bLink" href="the-district-brochure.pdf" download="The-District-by-Navilu-Brochure.pdf">tap here</a>.</div>
   </form>
 </div>
-<a class="wafab" id="waFab" aria-haspopup="dialog" href="https://wa.me/919916147778?text=Hi%2C%20I%20am%20interested%20in%20The%20District%20by%20Navilu.%20Please%20share%20plot%20availability%20and%20a%20cost%20sheet." target="_blank" rel="noopener" aria-label="Chat with the sales team on WhatsApp">
+<a class="wafab" id="waFab" aria-haspopup="dialog" href="https://wa.me/919916147779?text=Hi%2C%20I%20am%20interested%20in%20The%20District%20by%20Navilu.%20Please%20share%20plot%20availability%20and%20a%20cost%20sheet." target="_blank" rel="noopener" aria-label="Chat with the sales team on WhatsApp">
 <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#fff" d="M16 3.2A12.7 12.7 0 0 0 5.1 22.4L3.3 28.8l6.6-1.7A12.7 12.7 0 1 0 16 3.2Zm0 23.2a10.5 10.5 0 0 1-5.4-1.5l-.4-.2-3.9 1 1-3.8-.3-.4a10.5 10.5 0 1 1 9 4.9Zm5.8-7.9c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1a8.6 8.6 0 0 1-2.5-1.6 9.6 9.6 0 0 1-1.8-2.2c-.2-.3 0-.5.1-.7l.5-.6a2.3 2.3 0 0 0 .3-.5.6.6 0 0 0 0-.6c0-.2-.7-1.7-1-2.3s-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4 3.6 3.6 0 0 0-1.1 2.7 6.3 6.3 0 0 0 1.3 3.4 14.5 14.5 0 0 0 5.6 4.9c.8.3 1.4.5 1.8.7a4.4 4.4 0 0 0 2 .1 3.3 3.3 0 0 0 2.2-1.5 2.7 2.7 0 0 0 .2-1.5c-.1-.1-.3-.2-.6-.4Z"/></svg>
 <span>WhatsApp us</span></a>
 <script>
@@ -1268,7 +1270,7 @@ applyFilters();renderPanel();calc();enquiry();
  function v(id){return document.getElementById(id).value.trim()}
  function msg(){var n=v("wName"),p=v("wPlot"),d=document.getElementById("wDate").value,x=v("wMsg");
   var t="Hi, "+(n?"this is "+n+". ":"")+"I would like "+document.getElementById("wNeed").value+" for The District by Navilu."+(p?" Plot of interest: "+p+".":"")+(d?" Preferred visit date: "+d.split("-").reverse().join("-")+".":"")+(x?" "+x:"");
-  document.getElementById("wSend").href="https://wa.me/919916147778?text="+encodeURIComponent(t)}
+  document.getElementById("wSend").href="https://wa.me/919916147779?text="+encodeURIComponent(t)}
  ["wName","wNeed","wPlot","wDate","wMsg"].forEach(function(id){document.getElementById(id).addEventListener("input",msg)});msg();
  function open(e){if(e)e.preventDefault();last=document.activeElement;m.hidden=false;document.body.style.overflow="hidden";f.classList.add("away");setTimeout(function(){document.getElementById("wName").focus()},30)}
  function close(){if(m.hidden)return;m.hidden=true;document.body.style.overflow="";f.classList.remove("away");if(last&&last.focus)last.focus()}
