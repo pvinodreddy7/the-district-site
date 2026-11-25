@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://new.thedistrictbynavilu.com/sitemap.xml
