@@ -520,6 +520,14 @@ details summary:hover{color:var(--teal)}
 .stamps .rera span{color:#b7cbc8}
 @media (max-width:520px){.stamp{width:80px;height:80px}.hero .stamps .rera{flex-basis:100%;margin:4px 0 0}}
 </style>
+<script>
+/* Analytics: fill in the IDs to switch on. Empty = nothing loads. */
+window.TD_TRACK={ga:"GTM-KDF8QKCS",meta:""};
+(function(c){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};
+if(c.ga){var g=document.createElement("script"),m=c.ga.indexOf("GTM-")===0;g.async=true;g.src="https://www.googletagmanager.com/"+(m?"gtm.js":"gtag/js")+"?id="+c.ga;document.head.appendChild(g);gtag("js",new Date());if(!m)gtag("config",c.ga)}
+if(c.meta){!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");fbq("init",c.meta);fbq("track","PageView")}
+window.tdLeadEvent=function(form){try{if(c.ga)gtag("event","generate_lead",{form_name:form||"unknown"});if(c.meta&&window.fbq)fbq("track","Lead",{content_name:form||"unknown"})}catch(e){}}})(window.TD_TRACK);
+</script>
 </head>
 <body>
 <a class="skip" href="#top">Skip to content</a>
@@ -1370,7 +1378,7 @@ applyFilters();renderPanel();calc();enquiry();
  function phoneOk(p){var d=(p||"").replace(/\D/g,"");if(d.length===12&&d.indexOf("91")===0)d=d.slice(2);if(d.length===11&&d[0]==="0")d=d.slice(1);return (d.length===10&&/^[6-9]/.test(d))||(/^\+/.test(p.trim())&&d.length>=8)}
  function check(n,p,ok,err){var m="";if(n.trim().length<2)m="Please enter your name.";else if(!phoneOk(p))m="Please enter a valid mobile number.";else if(!ok)m="Please tick the box so we can contact you.";$(err).textContent=m;return !m}
  function send(data,keep){data.campaign=ss("tdCamp")||"";data.page=location.pathname+location.hash;data.consent=true;
-  try{return fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data),keepalive:!!keep}).then(function(r){if(r.ok)ls(KEY,"1");return r.ok}).catch(function(){return false})}catch(e){return Promise.resolve(false)}}
+  try{return fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data),keepalive:!!keep}).then(function(r){if(r.ok){ls(KEY,"1");if(window.tdLeadEvent)tdLeadEvent(data.form)}return r.ok}).catch(function(){return false})}catch(e){return Promise.resolve(false)}}
  var OTP_API=API.replace(/lead$/,"otp");
  function post(url,data){return fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)}).then(function(r){return r.json().catch(function(){return {}}).then(function(j){j._s=r.status;return j})}).catch(function(){return {_s:0}})}
  /* name + number + WhatsApp OTP, then onOk(). Falls back to no OTP if OTP is not set up or WhatsApp sending fails. */
